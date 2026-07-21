@@ -1,0 +1,64 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="text-center mb-5 fade-in-anim">
+                    <h1 class="fw-bold text-gradient">About Sketchify AI</h1>
+                    <p class="lead text-muted-custom">Learn more about the technology powering our image converter.</p>
+                </div>
+                
+                <div class="glass-card p-4 p-md-5 rounded-4 shadow-lg mb-5 fade-in-anim delay-1">
+                    <h3 class="fw-bold mb-3 border-bottom border-secondary pb-2"><i class="fa-solid fa-microchip text-primary me-2"></i>What is Image Processing?</h3>
+                    <p class="text-light-custom">
+                        Image processing is a method to perform some operations on an image, in order to get an enhanced image or to extract some useful information from it. It is a type of signal processing in which input is an image and output may be image or characteristics/features associated with that image.
+                    </p>
+                    
+                    <h3 class="fw-bold mt-5 mb-3 border-bottom border-secondary pb-2"><i class="fa-solid fa-eye text-success me-2"></i>What is OpenCV?</h3>
+                    <p class="text-light-custom">
+                        OpenCV (Open Source Computer Vision Library) is an open source computer vision and machine learning software library. OpenCV was built to provide a common infrastructure for computer vision applications and to accelerate the use of machine perception in the commercial products. It contains more than 2500 optimized algorithms!
+                    </p>
+                    
+                    <div class="row mt-5 g-4">
+                        <div class="col-md-6">
+                            <div class="bg-dark bg-opacity-50 p-4 rounded-3 h-100 border border-secondary">
+                                <h4 class="fw-bold mb-3"><i class="fa-solid fa-pencil text-warning me-2"></i>How Pencil Sketch Works</h4>
+                                <p class="text-light-custom small">
+                                    The pencil sketch effect is achieved using <code>cv2.pencilSketch()</code>. It works by exploiting the spatial and range filters to preserve edges while smoothing out the internal regions, simulating the strokes of a pencil. The two main parameters are:
+                                </p>
+                                <ul class="text-light-custom small">
+                                    <li><strong>sigma_s:</strong> Controls the spatial size of the neighborhood.</li>
+                                    <li><strong>sigma_r:</strong> Controls how dissimilar colors within the neighborhood will be averaged.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-dark bg-opacity-50 p-4 rounded-3 h-100 border border-secondary">
+                                <h4 class="fw-bold mb-3"><i class="fa-solid fa-paint-roller text-info me-2"></i>How Watercolor Works</h4>
+                                <p class="text-light-custom small">
+                                    The watercolor effect uses a combination of <code>cv2.edgePreservingFilter()</code> and <code>cv2.stylization()</code>. 
+                                    First, it smooths the image while strictly maintaining strong edges. Then, the stylization filter creates the characteristic "color bleed" and saturated look typical of watercolor paintings.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="fw-bold mt-5 mb-3 border-bottom border-secondary pb-2"><i class="fa-solid fa-star text-warning me-2"></i>Benefits of Digital Sketching</h3>
+                    <ul class="text-light-custom mb-0">
+                        <li class="mb-2"><strong>Non-destructive:</strong> Original photos remain perfectly intact.</li>
+                        <li class="mb-2"><strong>Speed:</strong> Create beautiful art in seconds instead of hours.</li>
+                        <li class="mb-2"><strong>Experimentation:</strong> Try different styles, intensities, and thicknesses instantly.</li>
+                        <li><strong>Accessibility:</strong> No drawing skills required to create stunning visual content.</li>
+                    </ul>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('index') }}#converter" class="btn btn-primary btn-lg rounded-pill px-5 shadow">Try It Now <i class="fa-solid fa-arrow-right ms-2"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
