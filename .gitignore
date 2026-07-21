@@ -3,31 +3,23 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-*.egg
-*.egg-info/
-dist/
-build/
-eggs/
-parts/
-var/
-sdist/
-develop-eggs/
-.installed.cfg
-lib/
-lib64/
 
-# Virtual Environment
+# Virtual environments
+.venv/
 venv/
 env/
-.venv/
 ENV/
 
-# Flask
-instance/
-.webassets-cache
+# Streamlit secrets (DO NOT commit)
+.streamlit/secrets.toml
 
-# IDE
+# Flask / legacy upload-output directories (not used by Streamlit)
+static/uploads/*
+static/outputs/*
+!static/uploads/.gitkeep
+!static/outputs/.gitkeep
+
+# IDEs
 .vscode/
 .idea/
 *.swp
@@ -37,14 +29,12 @@ instance/
 .DS_Store
 Thumbs.db
 
-# Uploaded / Output files (don't push user data)
-static/uploads/*
-static/outputs/*
+# Distribution / packaging
+*.egg
+*.egg-info/
+dist/
+build/
 
-# Keep the directories (via .gitkeep)
-!static/uploads/.gitkeep
-!static/outputs/.gitkeep
-
-# Environment variables
+# Environment files
 .env
 *.env
