@@ -1,13 +1,13 @@
 # 🎨 Sketchify AI — Photo to Pencil & Watercolor Sketch Converter
 
-[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/placeholder/deploy-status)](https://app.netlify.com)
 [![Python](https://img.shields.io/badge/Python-3.10+-blue?logo=python)](https://python.org)
-[![OpenCV](https://img.shields.io/badge/OpenCV-4.8+-green?logo=opencv)](https://opencv.org)
+[![Pillow](https://img.shields.io/badge/Pillow-10.x-green)](https://python-pillow.org)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 
-> Transform any photograph into stunning **Pencil Sketches** or **Watercolor Art** using AI-inspired OpenCV image processing — deployed on Streamlit Community Cloud.
-
-![Sketchify AI Demo](https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800)
+> Transform any photograph into stunning **Pencil Sketches** or **Watercolor Art**
+> using AI-inspired image processing — deployed as a static site on **Netlify** with
+> a **Python serverless function** for processing.
 
 ---
 
@@ -15,72 +15,103 @@
 
 | Feature | Description |
 |---------|-------------|
-| ✏️ **Pencil Sketch** | Grayscale dodge-blend effect via `cv2.pencilSketch` |
-| 🎨 **Watercolor** | Smooth painterly effect via `cv2.stylization` |
-| 🎚️ **Adjustable sliders** | Fine-tune strength, edge thickness, smoothness |
-| 🔄 **Before/After slider** | Interactive `streamlit-image-comparison` widget |
-| ⬇️ **Download** | Export result as high-quality JPEG (95%) |
-| 📱 **Responsive** | Works on desktop & mobile |
+| ✏️ **Pencil Sketch** | Grayscale dodge-blend effect |
+| 🎨 **Watercolor** | Edge-preserving median filter + saturation boost |
+| 🎚️ **Adjustable sliders** | Intensity, edge thickness, smoothness |
+| 🔄 **Before/After slider** | Interactive comparison of original vs result |
+| ⬇️ **Download** | Export result as JPEG (quality 92%) |
+| 🌙 **Dark/Light mode** | Persisted theme toggle |
+| 📱 **Responsive** | Desktop & mobile friendly |
 
 ---
 
-## 🚀 Live Demo
+## 🏗️ Architecture
 
-Deploy on **Streamlit Community Cloud** — see deployment section below.
+```
+Browser (HTML/CSS/JS)
+       │
+       │ POST /convert  (JSON + base64 image)
+       │
+       ▼
+Netlify Function  ←  netlify/functions/convert.py
+   (Python 3.x)       Pillow + NumPy only (~20MB, fits 50MB limit)
+       │
+       │ JSON response (base64 result image)
+       ▼
+Browser (renders comparison slider + download)
+```
 
----
-
-## 🛠️ Tech Stack
-
-- **Frontend / App**: [Streamlit](https://streamlit.io)
-- **Image Processing**: [OpenCV](https://opencv.org), [Pillow](https://python-pillow.org), [NumPy](https://numpy.org)
-- **Comparison Slider**: [streamlit-image-comparison](https://github.com/fcakyon/streamlit-image-comparison)
+**Local development** replaces the Netlify function with a Flask server (`app.py`)
+that uses the **identical algorithm and API**, so local ↔ production is 100% consistent.
 
 ---
 
 ## 📦 Local Installation
 
 ### Prerequisites
-- Python 3.10 or higher
+- Python **3.10+**
 - pip
 
-### Steps
+### Windows
 
-```bash
-# 1. Clone the repository
+```powershell
+# 1. Clone the repo
 git clone https://github.com/bigsmoke1404/Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter.git
 cd Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter
 
-# 2. Create and activate virtual environment (recommended)
-python -m venv .venv
-
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
-# macOS / Linux:
-source .venv/bin/activate
+# 2. Create virtual environment
+python -m venv venv
+venv\Scripts\Activate.ps1
 
 # 3. Install dependencies
 pip install -r requirements.txt
 
-# 4. Run the app
-streamlit run app.py
+# 4. Run locally
+python app.py
 ```
 
-The app will open at **http://localhost:8501** automatically.
+### macOS / Linux
+
+```bash
+git clone https://github.com/bigsmoke1404/Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter.git
+cd Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+python app.py
+```
+
+Open **http://127.0.0.1:5000** in your browser.
 
 ---
 
-## ☁️ Deploy on Streamlit Community Cloud
+## ☁️ Deploy on Netlify
 
-1. **Fork / push** this repository to your GitHub account.
-2. Go to **[share.streamlit.io](https://share.streamlit.io)** and sign in with GitHub.
-3. Click **"New app"** and fill in:
-   - **Repository**: `bigsmoke1404/Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter`
-   - **Branch**: `main`
-   - **Main file path**: `app.py`
-4. Click **"Deploy!"** — Streamlit Cloud installs `requirements.txt` and launches the app.
+### Option A — One-click via Netlify UI
 
-> 💡 No additional configuration needed — `.streamlit/config.toml` is already included.
+1. Push this repo to GitHub.
+2. Go to **[app.netlify.com](https://app.netlify.com)** → **"Add new site"** → **"Import an existing project"**.
+3. Connect your GitHub repo.
+4. Netlify auto-detects `netlify.toml`:
+   - **Publish directory**: `public`
+   - **Build command**: *(none)*
+   - **Functions directory**: `netlify/functions`
+5. Click **"Deploy site"**. Done in ~60 seconds. ✅
+
+### Option B — Netlify CLI
+
+```bash
+npm install -g netlify-cli
+netlify login
+netlify init
+netlify deploy --prod
+```
+
+### Environment Variables
+
+No environment variables are required. The app is fully self-contained.
 
 ---
 
@@ -88,19 +119,24 @@ The app will open at **http://localhost:8501** automatically.
 
 ```
 sketchify/
-├── app.py                    # ← Main Streamlit application
-├── requirements.txt          # Python dependencies
-├── .streamlit/
-│   └── config.toml           # Theme & server configuration
+├── public/                       # ← Static frontend (served by Netlify CDN)
+│   ├── index.html                #   Main converter page
+│   ├── about.html                #   About page
+│   └── static/
+│       ├── css/style.css         #   Premium dark glassmorphism theme
+│       └── js/main.js            #   All frontend interactions
+│
+├── netlify/
+│   └── functions/
+│       ├── convert.py            # ← Python serverless function (Pillow)
+│       └── requirements.txt      #   Function deps: Pillow + numpy only
+│
 ├── utils/
-│   ├── __init__.py
-│   └── sketch.py             # Image processing (OpenCV)
-├── static/                   # Legacy static assets (Flask)
-│   ├── css/style.css
-│   └── js/main.js
-├── templates/                # Legacy Jinja2 templates (Flask)
-├── netlify/                  # Netlify serverless function (alternative)
-├── .gitignore
+│   └── sketch.py                 # Shared Pillow algorithms (used by app.py)
+│
+├── app.py                        # ← Local Flask dev server
+├── requirements.txt              #   Local deps: Flask + Pillow + numpy
+├── netlify.toml                  #   Netlify configuration
 └── README.md
 ```
 
@@ -108,26 +144,34 @@ sketchify/
 
 ## 🎮 Usage
 
-1. **Upload** a JPG or PNG image (max 10 MB)
-2. **Select** a filter: ✏️ Pencil Sketch or 🎨 Watercolor Sketch
-3. **Adjust** sliders to fine-tune the effect
+1. **Upload** a JPG or PNG image (max 10 MB) via drag & drop or click
+2. **Select** a filter: ✏️ Pencil Sketch or 🎨 Watercolor
+3. **Adjust** the sliders to fine-tune the effect
 4. Click **⚡ Convert Image**
-5. **Compare** original vs converted using the drag slider
+5. **Compare** original vs converted with the drag slider
 6. Click **⬇️ Download Result** to save your artwork
 
 ---
 
-## 📸 How the Algorithms Work
+## 🔬 How the Algorithms Work
 
-### ✏️ Pencil Sketch
-Uses `cv2.pencilSketch()` with two parameters:
-- **sigma_s** (spatial): Controls blur radius — higher = softer strokes
-- **sigma_r** (range): Controls edge sensitivity — higher = bolder lines
+### ✏️ Pencil Sketch (dodge-blend)
+```
+gray     = image.convert('L')
+inverted = 255 - gray
+blurred  = GaussianBlur(inverted, radius=intensity*25)
+sketch   = gray / (1 - blurred/255)   # dodge blend
+result   = lerp(gray, sketch, edge_strength)
+```
 
-### 🎨 Watercolor
-Chains two OpenCV photo-art filters:
-1. `cv2.edgePreservingFilter()` — smooths colour regions while preserving edges
-2. `cv2.stylization()` — applies the characteristic ink-outline + colour wash
+### 🎨 Watercolor (iterative median filter)
+```
+for n in range(int(smoothness * 6)):
+    image = MedianFilter(image, size=5)
+image = enhance_color(image, 1.7)
+image = smooth_more(image)
+image = enhance_contrast(image, 1.15)
+```
 
 ---
 
@@ -137,10 +181,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-## 🤝 Contributing
-
-Pull requests are welcome! For major changes, please open an issue first.
-
----
-
-<p align="center">Made with ❤️ using Streamlit & OpenCV</p>
+<p align="center">Made with ❤️ using Python · Pillow · Netlify · Bootstrap 5</p>

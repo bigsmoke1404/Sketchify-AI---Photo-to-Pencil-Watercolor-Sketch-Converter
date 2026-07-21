@@ -1,7 +1,6 @@
 # Python
 __pycache__/
 *.py[cod]
-*$py.class
 *.so
 
 # Virtual environments
@@ -10,10 +9,10 @@ venv/
 env/
 ENV/
 
-# Streamlit secrets (DO NOT commit)
-.streamlit/secrets.toml
+# Streamlit (legacy — no longer in use)
+.streamlit/
 
-# Flask / legacy upload-output directories (not used by Streamlit)
+# Flask legacy upload / output directories (not used in Netlify version)
 static/uploads/*
 static/outputs/*
 !static/uploads/.gitkeep
@@ -23,7 +22,6 @@ static/outputs/*
 .vscode/
 .idea/
 *.swp
-*.swo
 
 # OS
 .DS_Store

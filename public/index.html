@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sketchify AI — Photo to Pencil &amp; Watercolor Sketch Converter</title>
+  <meta name="description" content="Transform any photo into stunning Pencil Sketches or Watercolor Art instantly using AI-powered image processing.">
+  <meta name="theme-color" content="#6C63FF">
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- ─── Navbar ────────────────────────────────────────────────── -->
+<nav class="navbar navbar-expand-lg glass-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <i class="fa-solid fa-palette me-2"></i>Sketchify AI
+    </a>
+    <button class="navbar-toggler border-0" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav"
+            aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="#converter">Converter</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <button id="theme-toggle" title="Toggle theme" aria-label="Toggle theme">
+            <i class="fa-solid fa-sun"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── Main Content ──────────────────────────────────────────── -->
+<main class="flex-grow-1">
+
+  <!-- ═══ HERO ═══════════════════════════════════════════════════ -->
+  <section id="home" class="hero-section d-flex align-items-center">
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+    <div class="bg-shape shape-3"></div>
+    <div class="container position-relative z-1">
+      <div class="row align-items-center g-5">
+
+        <!-- Text -->
+        <div class="col-lg-6 text-center text-lg-start slide-up">
+          <div class="section-badge mb-3">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> AI-Powered Art Converter
+          </div>
+          <h1 class="display-4 fw-bold mb-4">
+            Transform Your<br>Photos Into
+            <span class="text-gradient"> Beautiful Sketches</span>
+          </h1>
+          <p class="lead text-muted-custom mb-5">
+            Convert any image into stunning Pencil Sketches or Watercolor Art
+            using advanced image processing algorithms — no skills required.
+          </p>
+          <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start">
+            <a href="#converter"
+               class="btn btn-primary-gradient btn-lg px-5 py-3 fw-semibold hover-lift">
+              Start Converting <i class="fa-solid fa-arrow-right ms-2"></i>
+            </a>
+            <a href="about.html"
+               class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill fw-semibold">
+              Learn More
+            </a>
+          </div>
+        </div>
+
+        <!-- Hero image -->
+        <div class="col-lg-6 slide-up delay-2">
+          <div class="glass-card p-3 shadow-lg mx-auto" style="max-width:500px;">
+            <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop"
+                 alt="Sketch art demonstration"
+                 class="img-fluid rounded-3 w-100" style="height:340px;object-fit:cover;">
+            <div class="d-flex justify-content-between align-items-center mt-3 px-1">
+              <span class="text-muted-custom small"><i class="fa-solid fa-image me-1"></i> Original Photo</span>
+              <i class="fa-solid fa-arrow-right text-muted-custom"></i>
+              <span class="text-gradient fw-semibold small"><i class="fa-solid fa-pencil me-1"></i> Pencil Sketch</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FEATURES ════════════════════════════════════════════════ -->
+  <section id="features" class="py-6" style="padding:6rem 0;">
+    <div class="container">
+      <div class="text-center mb-5 fade-in">
+        <div class="section-badge mb-3"><i class="fa-solid fa-star"></i> Features</div>
+        <h2 class="display-5 fw-bold mb-3">Why Choose <span class="text-gradient">Sketchify AI?</span></h2>
+        <p class="text-muted-custom mx-auto" style="max-width:520px;">
+          Experience the power of advanced image processing directly in your browser — fast, private, and free.
+        </p>
+      </div>
+      <div class="row g-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card hover-lift fade-in delay-1">
+            <div class="icon-box" style="background:linear-gradient(135deg,#6C63FF,#8B5CF6);">
+              <i class="fa-solid fa-cloud-arrow-up text-white"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Easy Upload</h5>
+            <p class="text-muted-custom small mb-0">
+              Drag &amp; drop or click to select. Supports PNG, JPG up to 10 MB.
+            </p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card hover-lift fade-in delay-2">
+            <div class="icon-box" style="background:linear-gradient(135deg,#10b981,#059669);">
+              <i class="fa-solid fa-palette text-white"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Two Art Styles</h5>
+            <p class="text-muted-custom small mb-0">
+              Classic Pencil Sketch or vibrant Watercolor Art — your choice, your vision.
+            </p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card hover-lift fade-in delay-3">
+            <div class="icon-box" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+              <i class="fa-solid fa-bolt text-white"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Instant Results</h5>
+            <p class="text-muted-custom small mb-0">
+              Serverless processing delivers results in seconds, no waiting.
+            </p>
+          </div>
+        </div>
+        <div class="col-sm-6 col-lg-3">
+          <div class="feature-card hover-lift fade-in delay-4">
+            <div class="icon-box" style="background:linear-gradient(135deg,#38bdf8,#0ea5e9);">
+              <i class="fa-solid fa-sliders text-white"></i>
+            </div>
+            <h5 class="fw-bold mb-2">Full Control</h5>
+            <p class="text-muted-custom small mb-0">
+              Fine-tune intensity, edge thickness, and smoothness with precision sliders.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONVERTER ═══════════════════════════════════════════════ -->
+  <section id="converter" class="py-5" style="padding-top:5rem !important;padding-bottom:5rem !important;">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="section-badge mb-3"><i class="fa-solid fa-gears"></i> Converter</div>
+        <h2 class="display-5 fw-bold mb-3"><span class="text-gradient">AI Sketch Converter</span></h2>
+        <p class="text-muted-custom">Upload a photo and watch the magic happen.</p>
+      </div>
+
+      <div class="row justify-content-center">
+        <div class="col-xl-10">
+          <div class="glass-card p-4 p-md-5">
+
+            <form id="convertForm">
+              <div class="row g-4">
+
+                <!-- Upload Column -->
+                <div class="col-md-6">
+                  <p class="text-muted-custom small fw-semibold text-uppercase letter-spacing mb-2">
+                    <i class="fa-solid fa-upload me-1 text-primary"></i> Step 1 — Upload Image
+                  </p>
+                  <input type="file" id="imageInput" accept=".jpg,.jpeg,.png" class="d-none">
+                  <div id="uploadArea" class="upload-area" role="button" tabindex="0"
+                       aria-label="Upload image — click or drag and drop">
+                    <div id="uploadContent" class="text-center py-4 px-3">
+                      <i class="fa-solid fa-cloud-arrow-up fa-3x text-primary mb-3 d-block"></i>
+                      <h6 class="fw-bold mb-1">Drag &amp; Drop Image</h6>
+                      <p class="text-muted-custom small mb-3">or</p>
+                      <button type="button" class="btn btn-outline-primary rounded-pill px-4"
+                              onclick="event.stopPropagation();document.getElementById('imageInput').click()">
+                        <i class="fa-solid fa-folder-open me-2"></i>Browse Files
+                      </button>
+                      <p class="text-muted-custom small mt-3 mb-0">
+                        <i class="fa-solid fa-lock me-1"></i>Max 10 MB · JPG, PNG
+                      </p>
+                    </div>
+                    <div id="imagePreviewContainer" class="d-none">
+                      <img id="imagePreview" src="" alt="Preview">
+                      <button type="button" id="removeImageBtn"
+                              class="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 m-2"
+                              style="width:32px;height:32px;padding:0;z-index:10"
+                              aria-label="Remove image">
+                        <i class="fa-solid fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Settings Column -->
+                <div class="col-md-6 d-flex flex-column">
+                  <p class="text-muted-custom small fw-semibold text-uppercase mb-2">
+                    <i class="fa-solid fa-sliders me-1 text-primary"></i> Step 2 — Configure
+                  </p>
+
+                  <div class="mb-3">
+                    <label for="filterType" class="form-label text-muted-custom small">Filter Style</label>
+                    <select class="form-select glass-input py-2" id="filterType" name="filter_type">
+                      <option value="pencil">✏️ Pencil Sketch</option>
+                      <option value="watercolor">🎨 Watercolor Sketch</option>
+                    </select>
+                  </div>
+
+                  <!-- Pencil sliders -->
+                  <div id="pencilSettings">
+                    <div class="mb-3">
+                      <label class="form-label d-flex justify-content-between text-muted-custom small">
+                        <span>Sketch Strength</span><span id="intensityVal" class="text-primary fw-semibold">50%</span>
+                      </label>
+                      <input type="range" class="form-range" id="intensity" name="intensity"
+                             min="0" max="1" step="0.05" value="0.5">
+                    </div>
+                    <div class="mb-3">
+                      <label class="form-label d-flex justify-content-between text-muted-custom small">
+                        <span>Edge Thickness</span><span id="edgeVal" class="text-primary fw-semibold">50%</span>
+                      </label>
+                      <input type="range" class="form-range" id="edgeStrength" name="edge_strength"
+                             min="0" max="1" step="0.05" value="0.5">
+                    </div>
+                  </div>
+
+                  <!-- Watercolor sliders -->
+                  <div id="watercolorSettings" class="d-none">
+                    <div class="mb-3">
+                      <label class="form-label d-flex justify-content-between text-muted-custom small">
+                        <span>Smoothness</span><span id="smoothVal" class="text-primary fw-semibold">50%</span>
+                      </label>
+                      <input type="range" class="form-range" id="smoothness" name="smoothness"
+                             min="0" max="1" step="0.05" value="0.5">
+                    </div>
+                  </div>
+
+                  <div class="mt-auto">
+                    <hr class="border-secondary opacity-25">
+                    <p class="text-muted-custom small fw-semibold text-uppercase mb-2">
+                      <i class="fa-solid fa-wand-magic-sparkles me-1 text-primary"></i> Step 3 — Convert
+                    </p>
+                    <button type="submit" id="convertBtn"
+                            class="btn btn-primary-gradient w-100 py-3 fw-bold fs-5" disabled>
+                      <i class="fa-solid fa-gears me-2"></i> Convert Image
+                    </button>
+                    <button type="button" id="resetBtn"
+                            class="btn btn-outline-secondary w-100 rounded-pill py-2 mt-3 d-none">
+                      <i class="fa-solid fa-rotate-left me-2"></i> Reset &amp; Start Over
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <!-- Loading Overlay -->
+            <div id="loadingOverlay" class="d-none text-center py-5">
+              <div class="spinner-border text-primary mb-3"
+                   role="status" style="width:3.5rem;height:3.5rem;">
+                <span class="visually-hidden">Processing…</span>
+              </div>
+              <h5 class="fw-bold mb-1">Processing Image…</h5>
+              <p class="text-muted-custom small">Applying artistic filter via serverless function</p>
+            </div>
+
+            <!-- Results Area -->
+            <div id="resultsArea" class="d-none mt-5">
+              <hr class="border-secondary opacity-25 mb-5">
+              <div class="text-center mb-4">
+                <h4 class="fw-bold"><span class="text-gradient">✨ Conversion Result</span></h4>
+                <p class="text-muted-custom small">
+                  <i class="fa-solid fa-hand-pointer me-1"></i>Drag the handle to compare Original vs Converted
+                </p>
+              </div>
+
+              <!-- Before/After Slider -->
+              <div id="compareContainer" class="compare-container mx-auto">
+                <!-- Result (back layer) -->
+                <img id="resultImage" src="" alt="Converted Sketch">
+                <!-- Original (clipped front layer) -->
+                <div id="originalWrapper">
+                  <img id="originalImage" src="" alt="Original">
+                </div>
+                <span class="compare-label left"><i class="fa-solid fa-image me-1"></i>Original</span>
+                <span class="compare-label right"><i class="fa-solid fa-pencil me-1"></i>Converted</span>
+                <!-- Drag handle -->
+                <div id="sliderHandle">
+                  <i class="fa-solid fa-arrows-left-right"></i>
+                </div>
+              </div>
+
+              <!-- Download -->
+              <div class="text-center mt-4">
+                <a id="downloadBtn" href="#" download="sketchify_result.jpg"
+                   class="btn btn-success-gradient btn-lg px-5 py-3 fw-bold hover-scale">
+                  <i class="fa-solid fa-download me-2"></i> Download Result
+                </a>
+              </div>
+            </div>
+
+          </div><!-- /.glass-card -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ══════════════════════════════════════════════════ -->
+  <section id="contact" style="padding:5rem 0;">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-7">
+          <div class="text-center mb-5">
+            <div class="section-badge mb-3"><i class="fa-solid fa-envelope"></i> Contact</div>
+            <h2 class="display-5 fw-bold mb-2">Get In <span class="text-gradient">Touch</span></h2>
+            <p class="text-muted-custom">Have questions or feedback? Drop us a message.</p>
+          </div>
+          <div class="glass-card p-4 p-md-5">
+            <form id="contactForm"
+                  onsubmit="event.preventDefault();showToast('✅ Message sent! We\'ll get back to you soon.','success');this.reset();">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label for="cName" class="form-label text-muted-custom small">Name</label>
+                  <input type="text" class="form-control glass-input" id="cName" required placeholder="Your name">
+                </div>
+                <div class="col-md-6">
+                  <label for="cEmail" class="form-label text-muted-custom small">Email</label>
+                  <input type="email" class="form-control glass-input" id="cEmail" required placeholder="you@example.com">
+                </div>
+                <div class="col-12">
+                  <label for="cMessage" class="form-label text-muted-custom small">Message</label>
+                  <textarea class="form-control glass-input" id="cMessage" rows="4"
+                            required placeholder="Your message…"></textarea>
+                </div>
+                <div class="col-12 text-center mt-2">
+                  <button type="submit" class="btn btn-primary-gradient px-5 py-2 fw-semibold">
+                    Send Message <i class="fa-regular fa-paper-plane ms-2"></i>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ─── Footer ────────────────────────────────────────────────── -->
+<footer class="glass-footer text-light py-5">
+  <div class="container text-center">
+    <div class="mb-3 d-flex justify-content-center gap-4">
+      <a href="https://github.com/bigsmoke1404/Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter"
+         target="_blank" rel="noopener" class="footer-link" title="GitHub">
+        <i class="fa-brands fa-github"></i>
+      </a>
+      <a href="#contact" class="footer-link" title="Contact">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </div>
+    <p class="mb-1 fw-semibold">🎨 Sketchify AI</p>
+    <p class="text-muted-custom small mb-0">
+      Built with <i class="fa-solid fa-heart text-danger mx-1"></i> using
+      Python · Pillow · Netlify Functions · Bootstrap 5
+    </p>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999">
+  <div id="liveToast" class="toast align-items-center text-white border-0 bg-success"
+       role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="d-flex">
+      <div class="toast-body" id="toastMessage">Done.</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto"
+              data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="static/js/main.js"></script>
+</body>
+</html>

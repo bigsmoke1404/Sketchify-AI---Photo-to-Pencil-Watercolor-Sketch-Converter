@@ -1,11 +1,7 @@
-# ── Core Streamlit ─────────────────────────────────────────────────────────
-streamlit>=1.28.0
+# ── Local development server ───────────────────────────
+Flask>=3.0.0
+Werkzeug>=3.0.0
 
-# ── Image Processing ───────────────────────────────────────────────────────
-# headless = no display/X11 libs needed (Streamlit Cloud runs on Linux)
-opencv-python-headless>=4.8.1.78
+# ── Image processing (same as Netlify function) ────────
 Pillow>=10.1.0
 numpy>=1.26.2
-
-# ── Before/After comparison slider widget ─────────────────────────────────
-streamlit-image-comparison>=0.0.4

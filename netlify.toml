@@ -1,17 +1,35 @@
 [build]
-  publish = "."
+  # Serve the public/ directory as the static site root
+  publish = "public"
+  # No build step needed — pure static HTML
   command = ""
 
 [functions]
+  # Python serverless functions live here
   directory = "netlify/functions"
 
+# Redirect /convert → Netlify function (for any future non-JS clients)
 [[redirects]]
-  from = "/about"
-  to = "/about.html"
+  from   = "/convert"
+  to     = "/.netlify/functions/convert"
   status = 200
 
+# /about → about.html (clean URLs)
+[[redirects]]
+  from   = "/about"
+  to     = "/about.html"
+  status = 200
+
+# SPA fallback — send unknown paths to index.html (404 → index)
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# Security headers for all routes
 [[headers]]
   for = "/*"
   [headers.values]
+    X-Frame-Options        = "DENY"
     X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "DENY"
+    Referrer-Policy        = "strict-origin-when-cross-origin"

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Sketchify AI</title>
+  <meta name="description" content="Learn about the image processing technology behind Sketchify AI — Pillow filters, Python, and Netlify serverless functions.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg glass-navbar sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <i class="fa-solid fa-palette me-2"></i>Sketchify AI
+    </a>
+    <button class="navbar-toggler border-0" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-1">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#features">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#converter">Converter</a></li>
+        <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+        <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+          <button id="theme-toggle" title="Toggle theme">
+            <i class="fa-solid fa-sun"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main class="flex-grow-1">
+<section style="padding:5rem 0;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+
+        <!-- Header -->
+        <div class="text-center mb-5 slide-up">
+          <div class="section-badge mb-3"><i class="fa-solid fa-circle-info"></i> About</div>
+          <h1 class="display-4 fw-bold mb-3">About <span class="text-gradient">Sketchify AI</span></h1>
+          <p class="lead text-muted-custom mx-auto" style="max-width:560px;">
+            Learn how image processing algorithms transform your photos into digital art.
+          </p>
+        </div>
+
+        <!-- Cards grid -->
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="about-section-card h-100 fade-in delay-1">
+              <h3><i class="fa-solid fa-microchip me-2"></i>What is Image Processing?</h3>
+              <p>
+                Image processing involves applying mathematical transformations to pixel data
+                to produce an enhanced or artistically modified output. Sketchify AI uses
+                Python's <strong>Pillow</strong> library along with <strong>NumPy</strong> array
+                operations to simulate traditional artistic media in milliseconds.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="about-section-card h-100 fade-in delay-2">
+              <h3><i class="fa-solid fa-pencil me-2"></i>How Pencil Sketch Works</h3>
+              <p>Uses the classic <strong>dodge-blend technique</strong>:</p>
+              <ol>
+                <li>Convert image to grayscale</li>
+                <li>Invert the grayscale image</li>
+                <li>Apply Gaussian blur (radius = intensity slider)</li>
+                <li>Dodge-blend: <code>sketch = gray ÷ (1 − blur/255)</code></li>
+                <li>Blend with original grayscale by edge-strength slider</li>
+              </ol>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="about-section-card h-100 fade-in delay-3">
+              <h3><i class="fa-solid fa-paint-roller me-2"></i>How Watercolor Works</h3>
+              <p>Chains multiple Pillow operations:</p>
+              <ol>
+                <li>Apply N passes of <code>MedianFilter(size=5)</code> for edge-preserving smoothing</li>
+                <li>Boost colour saturation ×1.7 for watercolor vibrancy</li>
+                <li><code>SMOOTH_MORE</code> to soften harsh edges</li>
+                <li>Slight contrast enhancement ×1.15</li>
+              </ol>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="about-section-card h-100 fade-in delay-4">
+              <h3><i class="fa-solid fa-server me-2"></i>Tech Stack</h3>
+              <p class="mb-3">A modern serverless architecture:</p>
+              <div class="d-flex flex-wrap gap-2">
+                <span class="section-badge">🐍 Python</span>
+                <span class="section-badge">🖼️ Pillow</span>
+                <span class="section-badge">📐 NumPy</span>
+                <span class="section-badge">☁️ Netlify Functions</span>
+                <span class="section-badge">🌐 Bootstrap 5</span>
+                <span class="section-badge">⚡ Vanilla JS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Benefits -->
+        <div class="about-section-card mt-4 fade-in">
+          <h3><i class="fa-solid fa-star me-2"></i>Benefits of Digital Sketching</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <ul class="mb-0">
+                <li><strong>Non-destructive</strong> — original photos stay intact</li>
+                <li><strong>Instant</strong> — results in seconds, no software to install</li>
+                <li><strong>Private</strong> — processing is in-memory, no files stored</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="mb-0">
+                <li><strong>Adjustable</strong> — fine-tune every parameter in real time</li>
+                <li><strong>Free</strong> — open-source, deployed on free Netlify tier</li>
+                <li><strong>Accessible</strong> — no artistic skills required</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="text-center mt-5">
+          <a href="index.html#converter" class="btn btn-primary-gradient btn-lg px-5 py-3 hover-lift fw-bold">
+            Try It Now <i class="fa-solid fa-arrow-right ms-2"></i>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="glass-footer text-light py-5">
+  <div class="container text-center">
+    <div class="mb-3 d-flex justify-content-center gap-4">
+      <a href="https://github.com/bigsmoke1404/Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter"
+         target="_blank" rel="noopener" class="footer-link">
+        <i class="fa-brands fa-github"></i>
+      </a>
+      <a href="index.html#contact" class="footer-link">
+        <i class="fa-solid fa-envelope"></i>
+      </a>
+    </div>
+    <p class="mb-1 fw-semibold">🎨 Sketchify AI</p>
+    <p class="text-muted-custom small mb-0">
+      Built with <i class="fa-solid fa-heart text-danger mx-1"></i> using Python · Pillow · Netlify
+    </p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="static/js/main.js"></script>
+</body>
+</html>
