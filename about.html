@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Sketchify AI</title>
+    <meta name="description" content="Learn about the technology behind Sketchify AI — Image Processing, Pillow filters, and Digital Sketching.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark glass-navbar sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-4" href="index.html">
+            <i class="fa-solid fa-palette text-primary me-2"></i>Sketchify AI
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#converter">Converter</a></li>
+                <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html#contact">Contact</a></li>
+                <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                    <button id="theme-toggle" class="btn btn-outline-light btn-sm rounded-circle shadow-sm" title="Toggle Theme">
+                        <i class="fa-solid fa-sun"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main -->
+<main class="flex-grow-1">
+<section class="py-5">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="text-center mb-5 fade-in-anim">
+                    <h1 class="fw-bold text-gradient">About Sketchify AI</h1>
+                    <p class="lead text-muted-custom">Learn more about the technology powering our image converter.</p>
+                </div>
+
+                <div class="glass-card p-4 p-md-5 rounded-4 shadow-lg mb-5 fade-in-anim delay-1">
+
+                    <h3 class="fw-bold mb-3 border-bottom border-secondary pb-2">
+                        <i class="fa-solid fa-microchip text-primary me-2"></i>What is Image Processing?
+                    </h3>
+                    <p class="text-light-custom">
+                        Image processing is a method to perform operations on an image to get an enhanced image or to extract useful information from it. It is a type of signal processing in which input is an image and output may be an image or characteristics/features associated with that image. Sketchify AI applies artistic filters to transform photographs into digital artwork.
+                    </p>
+
+                    <h3 class="fw-bold mt-5 mb-3 border-bottom border-secondary pb-2">
+                        <i class="fa-solid fa-eye text-success me-2"></i>What is Pillow (PIL)?
+                    </h3>
+                    <p class="text-light-custom">
+                        Pillow is the friendly Python Imaging Library fork. It adds image processing capabilities to your Python interpreter, supporting many file formats and providing powerful image processing features. Sketchify AI uses Pillow together with NumPy arrays to apply mathematical transformations that simulate traditional artistic media.
+                    </p>
+
+                    <div class="row mt-5 g-4">
+                        <div class="col-md-6">
+                            <div class="bg-dark bg-opacity-50 p-4 rounded-3 h-100 border border-secondary">
+                                <h4 class="fw-bold mb-3"><i class="fa-solid fa-pencil text-warning me-2"></i>How Pencil Sketch Works</h4>
+                                <p class="text-light-custom small">The pencil sketch uses a <strong>dodge-blend</strong> technique:</p>
+                                <ol class="text-light-custom small">
+                                    <li>Convert image to grayscale</li>
+                                    <li>Invert the grayscale image</li>
+                                    <li>Apply Gaussian blur to the inverted image</li>
+                                    <li>Divide the original grayscale by the inverted blur (dodge)</li>
+                                </ol>
+                                <p class="text-light-custom small mb-0">This mimics the way pencil strokes accumulate — darker where edges are stronger.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="bg-dark bg-opacity-50 p-4 rounded-3 h-100 border border-secondary">
+                                <h4 class="fw-bold mb-3"><i class="fa-solid fa-paint-roller text-info me-2"></i>How Watercolor Works</h4>
+                                <p class="text-light-custom small">The watercolor effect uses layered Pillow filters:</p>
+                                <ol class="text-light-custom small">
+                                    <li>Apply multiple <code>MedianFilter</code> passes (edge-preserving smoothing)</li>
+                                    <li>Boost colour saturation (vibrancy)</li>
+                                    <li>Apply <code>SMOOTH_MORE</code> for softened edges</li>
+                                    <li>Enhance contrast for the characteristic "wash" look</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="fw-bold mt-5 mb-3 border-bottom border-secondary pb-2">
+                        <i class="fa-solid fa-star text-warning me-2"></i>Benefits of Digital Sketching
+                    </h3>
+                    <ul class="text-light-custom mb-0">
+                        <li class="mb-2"><strong>Non-destructive:</strong> Original photos remain perfectly intact.</li>
+                        <li class="mb-2"><strong>Speed:</strong> Create beautiful art in seconds instead of hours.</li>
+                        <li class="mb-2"><strong>Experimentation:</strong> Try different styles and intensities instantly.</li>
+                        <li><strong>Accessibility:</strong> No drawing skills required to create stunning visual content.</li>
+                    </ul>
+                </div>
+
+                <div class="text-center mt-4">
+                    <a href="index.html#converter" class="btn btn-primary btn-lg rounded-pill px-5 shadow">
+                        Try It Now <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer class="glass-footer text-light py-4 mt-auto">
+    <div class="container text-center">
+        <div class="mb-3">
+            <a href="https://github.com/bigsmoke1404/Sketchify-AI---Photo-to-Pencil-Watercolor-Sketch-Converter" target="_blank" class="text-light me-3 fs-5 hover-scale"><i class="fa-brands fa-github"></i></a>
+            <a href="#" class="text-light me-3 fs-5 hover-scale"><i class="fa-brands fa-linkedin"></i></a>
+            <a href="index.html#contact" class="text-light fs-5 hover-scale"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+        <p class="mb-0">&copy; 2026 Sketchify AI. All rights reserved.</p>
+        <p class="small text-muted mt-1">Made with <i class="fa-solid fa-heart text-danger mx-1"></i> using Netlify Functions &amp; Pillow</p>
+    </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMessage">Action successful.</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="static/js/main.js"></script>
+</body>
+</html>

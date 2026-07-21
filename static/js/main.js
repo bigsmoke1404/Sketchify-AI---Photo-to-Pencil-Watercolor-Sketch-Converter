@@ -1,7 +1,11 @@
 /**
  * main.js — Sketchify AI Frontend Logic
- * Handles: Dark Mode, Drag & Drop, Form Submission, Before/After Slider, Toasts, Keyboard Shortcuts
+ * Works on both Netlify (serverless) and local Flask development.
  */
+
+// Detect environment: local Flask vs Netlify production
+const IS_LOCAL = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const CONVERT_API = IS_LOCAL ? '/convert' : '/.netlify/functions/convert';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -12,13 +16,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const htmlElement = document.documentElement;
     const themeIcon = themeToggleBtn?.querySelector('i');
 
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
+    applyTheme(localStorage.getItem('theme') || 'dark');
 
     if (themeToggleBtn) {
         themeToggleBtn.addEventListener('click', () => {
-            const current = htmlElement.getAttribute('data-bs-theme');
-            applyTheme(current === 'dark' ? 'light' : 'dark');
+            applyTheme(htmlElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark');
         });
     }
 
@@ -31,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==============================================
-    //  FILTER TOGGLE (Pencil / Watercolor settings)
+    //  FILTER TOGGLE
     // ==============================================
     const filterType = document.getElementById('filterType');
     const pencilSettings = document.getElementById('pencilSettings');
@@ -39,13 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (filterType) {
         filterType.addEventListener('change', (e) => {
-            if (e.target.value === 'pencil') {
-                pencilSettings.classList.remove('d-none');
-                watercolorSettings.classList.add('d-none');
-            } else {
-                pencilSettings.classList.add('d-none');
-                watercolorSettings.classList.remove('d-none');
-            }
+            pencilSettings.classList.toggle('d-none', e.target.value !== 'pencil');
+            watercolorSettings.classList.toggle('d-none', e.target.value === 'pencil');
         });
     }
 
@@ -53,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
     //  SLIDER LABELS
     // ==============================================
     [
-        { id: 'intensity', label: 'intensityVal' },
+        { id: 'intensity',   label: 'intensityVal' },
         { id: 'edgeStrength', label: 'edgeVal' },
-        { id: 'smoothness', label: 'smoothVal' }
+        { id: 'smoothness',  label: 'smoothVal' }
     ].forEach(({ id, label }) => {
-        const el = document.getElementById(id);
+        const el  = document.getElementById(id);
         const lbl = document.getElementById(label);
         if (el && lbl) {
             el.addEventListener('input', () => {
@@ -69,56 +66,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==============================================
     //  DRAG & DROP / FILE UPLOAD
     // ==============================================
-    const uploadArea = document.getElementById('uploadArea');
-    const imageInput = document.getElementById('imageInput');
-    const uploadContent = document.getElementById('uploadContent');
+    const uploadArea           = document.getElementById('uploadArea');
+    const imageInput           = document.getElementById('imageInput');
+    const uploadContent        = document.getElementById('uploadContent');
     const imagePreviewContainer = document.getElementById('imagePreviewContainer');
-    const imagePreview = document.getElementById('imagePreview');
-    const removeImageBtn = document.getElementById('removeImageBtn');
-    const convertBtn = document.getElementById('convertBtn');
+    const imagePreview         = document.getElementById('imagePreview');
+    const removeImageBtn       = document.getElementById('removeImageBtn');
+    const convertBtn           = document.getElementById('convertBtn');
 
     let currentFile = null;
 
     if (uploadArea) {
-        // Prevent browser defaults for drag events
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evt => {
-            uploadArea.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); });
-        });
-
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(evt =>
+            uploadArea.addEventListener(evt, e => { e.preventDefault(); e.stopPropagation(); })
+        );
         ['dragenter', 'dragover'].forEach(evt =>
             uploadArea.addEventListener(evt, () => uploadArea.classList.add('dragover'))
         );
-
         ['dragleave', 'drop'].forEach(evt =>
             uploadArea.addEventListener(evt, () => uploadArea.classList.remove('dragover'))
         );
-
         uploadArea.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
     }
 
     if (imageInput) {
-        imageInput.addEventListener('change', function () {
-            handleFiles(this.files);
-        });
+        imageInput.addEventListener('change', function () { handleFiles(this.files); });
     }
 
     function handleFiles(files) {
-        if (!files || files.length === 0) return;
+        if (!files || !files.length) return;
         const file = files[0];
 
-        const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-        if (!validTypes.includes(file.type)) {
-            showToast('Invalid file type. Only JPG and PNG are allowed.', 'danger');
+        if (!['image/jpeg', 'image/png', 'image/jpg'].includes(file.type)) {
+            showToast('Invalid file type. Only JPG and PNG allowed.', 'danger');
             return;
         }
         if (file.size > 10 * 1024 * 1024) {
-            showToast('File is too large. Maximum allowed size is 10MB.', 'danger');
+            showToast('File too large. Max 10 MB allowed.', 'danger');
             return;
         }
 
         currentFile = file;
-
-        // Show image preview
         const reader = new FileReader();
         reader.onloadend = () => {
             imagePreview.src = reader.result;
@@ -130,10 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (removeImageBtn) {
-        removeImageBtn.addEventListener('click', e => {
-            e.stopPropagation();
-            resetUpload();
-        });
+        removeImageBtn.addEventListener('click', e => { e.stopPropagation(); resetUpload(); });
     }
 
     function resetUpload() {
@@ -146,108 +131,140 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ==============================================
-    //  FORM SUBMISSION (AJAX)
+    //  FORM SUBMISSION
     // ==============================================
-    const convertForm = document.getElementById('convertForm');
+    const convertForm   = document.getElementById('convertForm');
     const loadingOverlay = document.getElementById('loadingOverlay');
-    const resultsArea = document.getElementById('resultsArea');
-    const resetBtn = document.getElementById('resetBtn');
+    const resultsArea   = document.getElementById('resultsArea');
+    const resetBtn      = document.getElementById('resetBtn');
     const originalImage = document.getElementById('originalImage');
-    const resultImage = document.getElementById('resultImage');
-    const downloadBtn = document.getElementById('downloadBtn');
+    const resultImage   = document.getElementById('resultImage');
+    const downloadBtn   = document.getElementById('downloadBtn');
 
     if (convertForm) {
         convertForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!currentFile) {
-                showToast('Please select an image first.', 'danger');
-                return;
-            }
+            if (!currentFile) { showToast('Please select an image first.', 'danger'); return; }
 
-            // Show loading
+            // Show loader
             convertBtn.setAttribute('disabled', 'true');
-            showElement(loadingOverlay, 'flex');
+            showEl(loadingOverlay);
             resultsArea.classList.add('d-none');
 
-            // Build FormData — always set the file explicitly from currentFile
-            const formData = new FormData();
-            formData.append('image', currentFile, currentFile.name);
-            formData.append('filter_type', document.getElementById('filterType').value);
-            formData.append('intensity', document.getElementById('intensity').value);
-            formData.append('edge_strength', document.getElementById('edgeStrength').value);
-            formData.append('smoothness', document.getElementById('smoothness').value);
-
             try {
-                const response = await fetch('/convert', { method: 'POST', body: formData });
-                const data = await response.json();
+                let responseData;
 
-                if (!response.ok) throw new Error(data.error || 'Conversion failed');
+                if (IS_LOCAL) {
+                    // ── Local Flask: send as multipart FormData ──
+                    const formData = new FormData();
+                    formData.append('image', currentFile, currentFile.name);
+                    formData.append('filter_type', filterType.value);
+                    formData.append('intensity',   document.getElementById('intensity').value);
+                    formData.append('edge_strength', document.getElementById('edgeStrength').value);
+                    formData.append('smoothness',  document.getElementById('smoothness').value);
 
-                // ---- Success ----
-                // Wait for both images to load before showing results
-                await Promise.all([
-                    loadImg(originalImage, data.original_image),
-                    loadImg(resultImage, data.converted_image)
-                ]);
+                    const res = await fetch(CONVERT_API, { method: 'POST', body: formData });
+                    responseData = await res.json();
+                    if (!res.ok) throw new Error(responseData.error || 'Conversion failed');
 
-                // Set download link
-                downloadBtn.href = data.converted_image;
-                downloadBtn.setAttribute('download', 'sketchify_result.jpg');
+                    // Local: images are file paths, load them normally
+                    await Promise.all([
+                        loadImgSrc(originalImage, responseData.original_image),
+                        loadImgSrc(resultImage,   responseData.converted_image)
+                    ]);
 
-                // Hide loading, show results
-                hideElement(loadingOverlay);
-                showElement(resultsArea);
+                    // Download via file URL
+                    downloadBtn.href = responseData.converted_image;
+                    downloadBtn.setAttribute('download', 'sketchify_result.jpg');
+
+                } else {
+                    // ── Netlify: send as JSON with base64 image ──
+                    const imageBase64 = await fileToBase64(currentFile);
+
+                    const payload = {
+                        image:        imageBase64,
+                        filter_type:  filterType.value,
+                        intensity:    parseFloat(document.getElementById('intensity').value),
+                        edge_strength: parseFloat(document.getElementById('edgeStrength').value),
+                        smoothness:   parseFloat(document.getElementById('smoothness').value)
+                    };
+
+                    const res = await fetch(CONVERT_API, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    responseData = await res.json();
+                    if (!res.ok) throw new Error(responseData.error || 'Conversion failed');
+
+                    // Netlify: images are base64 data URLs
+                    originalImage.src = imagePreview.src; // already loaded in preview
+                    resultImage.src   = responseData.converted_image;
+
+                    // Create blob URL for proper download
+                    const blob    = dataURLtoBlob(responseData.converted_image);
+                    const blobUrl = URL.createObjectURL(blob);
+                    downloadBtn.href = blobUrl;
+                    downloadBtn.setAttribute('download', 'sketchify_result.jpg');
+                }
+
+                // Wait for result image to render
+                await new Promise(r => setTimeout(r, 300));
+
+                hideEl(loadingOverlay);
+                showEl(resultsArea);
                 resetBtn.classList.remove('d-none');
-
-                // Initialize the comparison slider now that images are loaded
                 initSlider();
-
-                // Scroll to results smoothly
-                setTimeout(() => {
-                    resultsArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 100);
-
+                resultsArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 showToast('Image converted successfully! ✨', 'success');
 
             } catch (err) {
-                hideElement(loadingOverlay);
+                hideEl(loadingOverlay);
                 convertBtn.removeAttribute('disabled');
                 showToast('Error: ' + err.message, 'danger');
             }
         });
     }
 
-    // Helper: show a hidden element with optional display type
-    function showElement(el, display = 'block') {
-        if (!el) return;
-        el.classList.remove('d-none');
-        el.style.display = display;
-    }
+    // Helper — show element
+    function showEl(el) { if (el) { el.classList.remove('d-none'); el.style.display = 'block'; } }
+    function hideEl(el) { if (el) { el.classList.add('d-none'); el.style.display = ''; } }
 
-    function hideElement(el) {
-        if (!el) return;
-        el.classList.add('d-none');
-        el.style.display = '';
-    }
-
-    // Helper: return a Promise that resolves when an image finishes loading
-    function loadImg(imgEl, src) {
-        return new Promise((resolve) => {
-            imgEl.onload = resolve;
-            imgEl.onerror = resolve; // resolve anyway so we don't hang forever
+    // Helper — load image src as Promise
+    function loadImgSrc(imgEl, src) {
+        return new Promise(resolve => {
+            imgEl.onload = imgEl.onerror = resolve;
             imgEl.src = src;
         });
+    }
+
+    // Helper — File → base64 data URL
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Helper — base64 data URL → Blob (for download)
+    function dataURLtoBlob(dataURL) {
+        const [header, base64] = dataURL.split(',');
+        const mime = header.match(/:(.*?);/)[1];
+        const binary = atob(base64);
+        const array = new Uint8Array(binary.length);
+        for (let i = 0; i < binary.length; i++) array[i] = binary.charCodeAt(i);
+        return new Blob([array], { type: mime });
     }
 
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             resetUpload();
-            hideElement(resultsArea);
+            hideEl(resultsArea);
             resetBtn.classList.add('d-none');
-            const converterSection = document.getElementById('converter');
-            if (converterSection) {
-                converterSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+            const sec = document.getElementById('converter');
+            if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     }
 
@@ -256,58 +273,45 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==============================================
     function initSlider() {
         const container = document.getElementById('compareContainer');
-        const handle = document.getElementById('sliderHandle');
-        const wrapper = document.getElementById('originalWrapper');
-
+        const handle    = document.getElementById('sliderHandle');
+        const wrapper   = document.getElementById('originalWrapper');
         if (!container || !handle || !wrapper) return;
 
-        const containerWidth = container.offsetWidth;
+        // Set inner image width to full container width so clipping looks correct
+        originalImage.style.width = container.offsetWidth + 'px';
 
-        // Make originalImage exactly the full container width so clipping works
-        originalImage.style.width = containerWidth + 'px';
+        let pct = 50;
+        applySlider(pct);
+        let dragging = false;
 
-        // Reset to 50%
-        let percent = 50;
-        applySlider(percent);
+        handle.addEventListener('mousedown',  e => { dragging = true; e.preventDefault(); });
+        handle.addEventListener('touchstart', () => { dragging = true; }, { passive: true });
+        window.addEventListener('mouseup',    () => { dragging = false; });
+        window.addEventListener('touchend',   () => { dragging = false; });
 
-        let isDragging = false;
-
-        handle.addEventListener('mousedown', (e) => { isDragging = true; e.preventDefault(); });
-        handle.addEventListener('touchstart', (e) => { isDragging = true; }, { passive: true });
-
-        window.addEventListener('mouseup', () => { isDragging = false; });
-        window.addEventListener('touchend', () => { isDragging = false; });
-
-        window.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            percent = calcPercent(e.clientX, container);
-            applySlider(percent);
+        window.addEventListener('mousemove', e => {
+            if (!dragging) return;
+            pct = getPercent(e.clientX, container);
+            applySlider(pct);
         });
-
-        window.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            percent = calcPercent(e.touches[0].clientX, container);
-            applySlider(percent);
+        window.addEventListener('touchmove', e => {
+            if (!dragging) return;
+            pct = getPercent(e.touches[0].clientX, container);
+            applySlider(pct);
         }, { passive: true });
 
-        // Re-apply on window resize
         window.addEventListener('resize', () => {
-            const w = container.offsetWidth;
-            originalImage.style.width = w + 'px';
-            applySlider(percent);
+            originalImage.style.width = container.offsetWidth + 'px';
+            applySlider(pct);
         });
 
-        function calcPercent(clientX, el) {
-            const rect = el.getBoundingClientRect();
-            let x = clientX - rect.left;
-            x = Math.max(0, Math.min(x, rect.width));
-            return (x / rect.width) * 100;
+        function getPercent(clientX, el) {
+            const r = el.getBoundingClientRect();
+            return Math.max(0, Math.min(100, ((clientX - r.left) / r.width) * 100));
         }
-
-        function applySlider(pct) {
-            wrapper.style.width = pct + '%';
-            handle.style.left = pct + '%';
-            // Keep handle vertically centred (transform X only)
+        function applySlider(p) {
+            wrapper.style.width  = p + '%';
+            handle.style.left    = p + '%';
             handle.style.transform = 'translate(-50%, -50%)';
         }
     }
@@ -315,8 +319,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==============================================
     //  KEYBOARD SHORTCUTS
     // ==============================================
-    document.addEventListener('keydown', (e) => {
-        // Esc — reset
+    document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
             if (resetBtn && !resetBtn.classList.contains('d-none')) {
                 resetBtn.click();
@@ -325,22 +328,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
-
 });
 
 // ==============================================
 //  TOAST (global — called from inline HTML too)
 // ==============================================
 function showToast(message, type = 'success') {
-    const toastEl = document.getElementById('liveToast');
+    const toastEl   = document.getElementById('liveToast');
     const toastBody = document.getElementById('toastMessage');
     if (!toastEl || !toastBody) return;
-
     toastBody.textContent = message;
-
-    // Reset classes, then apply type
     toastEl.className = `toast align-items-center text-white border-0 bg-${type}`;
-
-    const bsToast = bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3500 });
-    bsToast.show();
+    bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 3500 }).show();
 }
