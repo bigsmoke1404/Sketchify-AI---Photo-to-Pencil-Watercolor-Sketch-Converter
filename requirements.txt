@@ -1,7 +1,4 @@
-# ── Local development server ───────────────────────────
-Flask>=3.0.0
-Werkzeug>=3.0.0
-
-# ── Image processing (same as Netlify function) ────────
+streamlit>=1.28.0
 Pillow>=10.1.0
 numpy>=1.26.2
+streamlit-image-comparison>=0.0.4
